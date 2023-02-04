@@ -6,4 +6,14 @@ plugins:
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: instant-domain-ingress-claimer
 repo: github.com/sp-yduck/ingress-resource-controller
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: sp-yduck.com
+  group: network
+  kind: IngressResource
+  path: github.com/sp-yduck/ingress-resource-controller/api/v1beta1
+  version: v1beta1
 version: "3"

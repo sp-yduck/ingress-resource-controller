@@ -1,0 +1,31 @@
+# permissions for end users to edit ingressresources.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: ingressresource-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: instant-domain-ingress-claimer
+    app.kubernetes.io/part-of: instant-domain-ingress-claimer
+    app.kubernetes.io/managed-by: kustomize
+  name: ingressresource-editor-role
+rules:
+- apiGroups:
+  - network.sp-yduck.com
+  resources:
+  - ingressresources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - network.sp-yduck.com
+  resources:
+  - ingressresources/status
+  verbs:
+  - get

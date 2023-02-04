@@ -1,0 +1,12 @@
+apiVersion: network.sp-yduck.com/v1beta1
+kind: IngressResource
+metadata:
+  labels:
+    app.kubernetes.io/name: ingressresource
+    app.kubernetes.io/instance: ingressresource-sample
+    app.kubernetes.io/part-of: instant-domain-ingress-claimer
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: instant-domain-ingress-claimer
+  name: ingressresource-sample
+spec:
+  # TODO(user): Add fields here
