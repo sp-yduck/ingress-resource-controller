@@ -17,6 +17,7 @@ limitations under the License.
 package v1beta1
 
 import (
+	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -28,8 +29,16 @@ type IngressResourceSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of IngressResource. Edit ingressresource_types.go to remove/update
-	Domain string `json:"domain,omitempty"`
+	// Selector
+	Selector *metav1.LabelSelector `json:"selector" protobuf:"bytes,2,opt,name=selector"`
+
+	// Template
+	Template IngressTemplateSpec `json:"domain,omitempty"`
+}
+
+type IngressTemplateSpec struct {
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Spec              networkingv1.IngressSpec
 }
 
 // IngressResourceStatus defines the observed state of IngressResource

@@ -19,9 +19,11 @@ package controllers
 import (
 	"context"
 
+	networkingv1 "k8s.io/api/networking/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	networkingv1beta1 "github.com/sp-yduck/ingress-resource-controller/api/v1beta1"
@@ -47,9 +49,24 @@ type IngressResourceReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *IngressResourceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	logger := log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var ingressResource networkingv1beta1.IngressResource
+	if err := r.Get(ctx, req.NamespacedName, &ingressResource); err != nil {
+		logger.Error(err, "unable to fetch ingressResource")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	var ingressResourceList networkingv1beta1.IngressResourceList
+	if err := r.List(ctx, &ingressResourceList, client.InNamespace(req.Namespace), &client.ListOptions{}); err != nil {
+		logger.Error(err, "unable to list ingressResources")
+		return ctrl.Result{}, err
+	}
+
+	if err := r.reconcileIngress(ctx, ingressResource); err != nil {
+		logger.Error(err, "unable to reconcile ingresss")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
 
 	return ctrl.Result{}, nil
 }
@@ -59,4 +76,24 @@ func (r *IngressResourceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&networkingv1beta1.IngressResource{}).
 		Complete(r)
+}
+
+func (r *IngressResourceReconciler) reconcileIngress(ctx context.Context, ingressResource networkingv1beta1.IngressResource) error {
+	logger := log.FromContext(ctx)
+
+	ingress := &networkingv1.Ingress{}
+	ingress.SetNamespace(ingressResource.Namespace)
+	ingress.SetName(ingressResource.Name)
+	op, err := ctrl.CreateOrUpdate(ctx, r.Client, ingress, func() error {
+		ingress.Spec = ingressResource.Spec.Template.Spec
+		return ctrl.SetControllerReference(&ingressResource, ingress, r.Scheme)
+	})
+	if err != nil {
+		logger.Error(err, "unable to create or update ingress")
+		return err
+	}
+	if op != controllerutil.OperationResultNone {
+		logger.Info("reconcile ingress successfully", "op", op)
+	}
+	return nil
 }
