@@ -31,7 +31,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	networkv1beta1 "github.com/sp-yduck/ingress-resource-controller/api/v1beta1"
+	networkingv1beta1 "github.com/sp-yduck/ingress-resource-controller/api/v1beta1"
 	"github.com/sp-yduck/ingress-resource-controller/controllers"
 	//+kubebuilder:scaffold:imports
 )
@@ -44,7 +44,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(networkv1beta1.AddToScheme(scheme))
+	utilruntime.Must(networkingv1beta1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 

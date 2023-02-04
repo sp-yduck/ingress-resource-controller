@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	networkv1beta1 "github.com/sp-yduck/ingress-resource-controller/api/v1beta1"
+	networkingv1beta1 "github.com/sp-yduck/ingress-resource-controller/api/v1beta1"
 )
 
 // IngressResourceReconciler reconciles a IngressResource object
@@ -33,9 +33,9 @@ type IngressResourceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=network.sp-yduck.com,resources=ingressresources,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=network.sp-yduck.com,resources=ingressresources/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=network.sp-yduck.com,resources=ingressresources/finalizers,verbs=update
+//+kubebuilder:rbac:groups=networking.sp-yduck.com,resources=ingressresources,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=networking.sp-yduck.com,resources=ingressresources/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=networking.sp-yduck.com,resources=ingressresources/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -57,6 +57,6 @@ func (r *IngressResourceReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 // SetupWithManager sets up the controller with the Manager.
 func (r *IngressResourceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&networkv1beta1.IngressResource{}).
+		For(&networkingv1beta1.IngressResource{}).
 		Complete(r)
 }

@@ -12,7 +12,7 @@ resources:
     namespaced: true
   controller: true
   domain: sp-yduck.com
-  group: network
+  group: networking
   kind: IngressResource
   path: github.com/sp-yduck/ingress-resource-controller/api/v1beta1
   version: v1beta1

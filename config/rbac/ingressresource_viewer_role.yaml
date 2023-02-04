@@ -12,7 +12,7 @@ metadata:
   name: ingressresource-viewer-role
 rules:
 - apiGroups:
-  - network.sp-yduck.com
+  - networking.sp-yduck.com
   resources:
   - ingressresources
   verbs:
@@ -20,7 +20,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - network.sp-yduck.com
+  - networking.sp-yduck.com
   resources:
   - ingressresources/status
   verbs:

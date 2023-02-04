@@ -29,7 +29,7 @@ type IngressResourceSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of IngressResource. Edit ingressresource_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Domain string `json:"domain,omitempty"`
 }
 
 // IngressResourceStatus defines the observed state of IngressResource

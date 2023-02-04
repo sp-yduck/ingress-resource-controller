@@ -12,7 +12,7 @@ metadata:
   name: ingressresource-editor-role
 rules:
 - apiGroups:
-  - network.sp-yduck.com
+  - networking.sp-yduck.com
   resources:
   - ingressresources
   verbs:
@@ -24,7 +24,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - network.sp-yduck.com
+  - networking.sp-yduck.com
   resources:
   - ingressresources/status
   verbs:

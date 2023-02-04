@@ -1,4 +1,4 @@
-apiVersion: network.sp-yduck.com/v1beta1
+apiVersion: networking.sp-yduck.com/v1beta1
 kind: IngressResource
 metadata:
   labels:
