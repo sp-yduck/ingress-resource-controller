@@ -1,4 +1,4 @@
-module github.com/sp-yduck/instant-domain-ingress-claimer
+module github.com/sp-yduck/ingress-resource-controller
 
 go 1.19
 

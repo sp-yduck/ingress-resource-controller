@@ -5,5 +5,5 @@ plugins:
   manifests.sdk.operatorframework.io/v2: {}
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: instant-domain-ingress-claimer
-repo: github.com/sp-yduck/instant-domain-ingress-claimer
+repo: github.com/sp-yduck/ingress-resource-controller
 version: "3"
