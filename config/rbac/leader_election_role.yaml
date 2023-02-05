@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/name: role
     app.kubernetes.io/instance: leader-election-role
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: instant-domain-ingress-claimer
-    app.kubernetes.io/part-of: instant-domain-ingress-claimer
+    app.kubernetes.io/created-by: ingress-resource-controller
+    app.kubernetes.io/part-of: ingress-resource-controller
     app.kubernetes.io/managed-by: kustomize
   name: leader-election-role
 rules:

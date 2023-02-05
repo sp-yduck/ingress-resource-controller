@@ -5,8 +5,8 @@ metadata:
     app.kubernetes.io/name: clusterrolebinding
     app.kubernetes.io/instance: manager-rolebinding
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: instant-domain-ingress-claimer
-    app.kubernetes.io/part-of: instant-domain-ingress-claimer
+    app.kubernetes.io/created-by: ingress-resource-controller
+    app.kubernetes.io/part-of: ingress-resource-controller
     app.kubernetes.io/managed-by: kustomize
   name: manager-rolebinding
 roleRef:

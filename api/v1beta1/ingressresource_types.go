@@ -33,12 +33,12 @@ type IngressResourceSpec struct {
 	Selector *metav1.LabelSelector `json:"selector" protobuf:"bytes,2,opt,name=selector"`
 
 	// Template
-	Template IngressTemplateSpec `json:"domain,omitempty"`
+	Template IngressTemplateSpec `json:"template"`
 }
 
 type IngressTemplateSpec struct {
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Spec              networkingv1.IngressSpec
+	Spec              networkingv1.IngressSpec `json:"spec"`
 }
 
 // IngressResourceStatus defines the observed state of IngressResource

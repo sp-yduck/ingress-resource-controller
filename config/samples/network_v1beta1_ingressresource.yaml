@@ -4,9 +4,9 @@ metadata:
   labels:
     app.kubernetes.io/name: ingressresource
     app.kubernetes.io/instance: ingressresource-sample
-    app.kubernetes.io/part-of: instant-domain-ingress-claimer
+    app.kubernetes.io/part-of: ingress-resource-controller
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: instant-domain-ingress-claimer
+    app.kubernetes.io/created-by: ingress-resource-controller
   name: ingressresource-sample
 spec:
   # TODO(user): Add fields here
