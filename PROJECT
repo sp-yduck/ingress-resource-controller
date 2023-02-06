@@ -16,4 +16,8 @@ resources:
   kind: IngressResource
   path: github.com/sp-yduck/ingress-resource-controller/api/v1beta1
   version: v1beta1
+- controller: true
+  domain: sp-yduck.com
+  kind: Service
+  version: v1beta1
 version: "3"
