@@ -18,9 +18,11 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	v1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -36,9 +38,9 @@ type ServiceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=sp-yduck.com,resources=services,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=sp-yduck.com,resources=services/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=sp-yduck.com,resources=services/finalizers,verbs=update
+//+kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups="",resources=services/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups="",resources=services/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -68,17 +70,23 @@ func (r *ServiceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 
 func (r *ServiceReconciler) reconcileService(ctx context.Context, service v1.Service) error {
 	logger := log.FromContext(ctx)
+	logger.Info("start reconcile service")
 
 	ingressResource := &networkingv1beta1.IngressResource{}
-	ingressResource.SetName(service.Name)
-	ingressResource.SetNamespace(service.Namespace)
+	ingressResource.ObjectMeta.SetName(service.Name)
+	ingressResource.ObjectMeta.SetNamespace(service.Namespace)
 	// ingressResource.SetAnnotations()
+	logger.Info(fmt.Sprintf("Name: %s, Namespace: %s", ingressResource.Name, ingressResource.Namespace))
 
 	hostNameSuffix := "localhost"
 	hostName := service.Name + "." + service.Namespace + "." + hostNameSuffix
 	defaultPathType := networkingv1.PathType("Prefix")
+	defaultIngressClass := "nginx"
+	labels := make(map[string]string)
+	labels["ingressresource.networking.sp-yduck.com/owner"] = service.Name
 	op, err := ctrl.CreateOrUpdate(ctx, r.Client, ingressResource, func() error {
-		*ingressResource.Spec.Template.Spec.IngressClassName = "nginx"
+		ingressResource.Spec.Template.Spec.IngressClassName = &defaultIngressClass
+		ingressResource.Spec.Selector = &metav1.LabelSelector{MatchLabels: labels}
 		ingressResource.Spec.Template.Spec.Rules = []networkingv1.IngressRule{
 			{
 				Host: hostName,
@@ -92,7 +100,8 @@ func (r *ServiceReconciler) reconcileService(ctx context.Context, service v1.Ser
 									Service: &networkingv1.IngressServiceBackend{
 										Name: service.Name,
 										Port: networkingv1.ServiceBackendPort{
-											Number: service.Spec.Ports[0].Port,
+											// Number: service.Spec.Ports[0].Port,
+											Number: 80,
 										},
 									},
 								},
@@ -102,7 +111,8 @@ func (r *ServiceReconciler) reconcileService(ctx context.Context, service v1.Ser
 				},
 			},
 		}
-		return ctrl.SetControllerReference(&v1.Service{}, ingressResource, r.Scheme)
+		logger.Info(fmt.Sprintf("creating ingress resource: %v", ingressResource))
+		return ctrl.SetControllerReference(&service, ingressResource, r.Scheme)
 	})
 	if err != nil {
 		logger.Error(err, "unable to create or update IngressResource")
