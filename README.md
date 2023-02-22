@@ -1,8 +1,11 @@
 # ingress-resource-controller
-// TODO(user): Add simple overview of use/purpose
+
+ingress-resource-controller will automatically populate **ingress/networking.k8s.io** resource according to **service** resource.
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+ingress host name will be `<svc name>.<namespace>.<hostname suffuix>`. So when you have svc resource named abc in default namespace, ingress host name will be `abc.default.localhost` (default hostname suffix is localhost).
+You can specify this value with `--hostname-suffix` flag.
+Also you can specify IngressClass name with `--default-ingress-class` flag (default is `nginx`).
 
 ## Getting Started
 You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
@@ -40,9 +43,6 @@ UnDeploy the controller to the cluster:
 ```sh
 make undeploy
 ```
-
-## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
 
 ### How it works
 This project aims to follow the Kubernetes [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)
