@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: spyduck/irc
-  newTag: latest
+  newTag: v0.0.1

@@ -32,10 +32,20 @@ import (
 	networkingv1beta1 "github.com/sp-yduck/ingress-resource-controller/api/v1beta1"
 )
 
+var (
+	hostNameSuffix      string
+	defaultIngressClass string
+)
+
 // ServiceReconciler reconciles a Service object
 type ServiceReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+}
+
+func SetControllerVariables(hns *string, dic *string) {
+	hostNameSuffix = *hns
+	defaultIngressClass = *dic
 }
 
 //+kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch;create;update;patch;delete
@@ -78,10 +88,8 @@ func (r *ServiceReconciler) reconcileService(ctx context.Context, service v1.Ser
 	// ingressResource.SetAnnotations()
 	logger.Info(fmt.Sprintf("Name: %s, Namespace: %s", ingressResource.Name, ingressResource.Namespace))
 
-	hostNameSuffix := "localhost"
 	hostName := service.Name + "." + service.Namespace + "." + hostNameSuffix
 	defaultPathType := networkingv1.PathType("Prefix")
-	defaultIngressClass := "nginx"
 	labels := make(map[string]string)
 	labels["ingressresource.networking.sp-yduck.com/owner"] = service.Name
 	op, err := ctrl.CreateOrUpdate(ctx, r.Client, ingressResource, func() error {
