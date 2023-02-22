@@ -36,6 +36,7 @@ type IngressResourceReconciler struct {
 }
 
 //+kubebuilder:rbac:groups=networking.sp-yduck.com,resources=ingressresources,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=networking.k8s.io,resources=ingresses,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=networking.sp-yduck.com,resources=ingressresources/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=networking.sp-yduck.com,resources=ingressresources/finalizers,verbs=update
 
