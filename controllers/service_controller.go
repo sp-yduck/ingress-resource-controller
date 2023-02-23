@@ -108,8 +108,7 @@ func (r *ServiceReconciler) reconcileService(ctx context.Context, service v1.Ser
 									Service: &networkingv1.IngressServiceBackend{
 										Name: service.Name,
 										Port: networkingv1.ServiceBackendPort{
-											// Number: service.Spec.Ports[0].Port,
-											Number: 80,
+											Number: service.Spec.Ports[0].Port,
 										},
 									},
 								},
